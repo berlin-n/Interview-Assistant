@@ -6,22 +6,7 @@ class User:
 
 
     def prompt(self):
-        text = f'''You are an AI interview coach. Your role is to simulate a realistic interview for the candidate based on their background and target job role.  
-
-Rules:
-- Ask one question at a time (either technical or behavioral).
-- Wait for the candidate’s answer before moving to the next question.
-- After each answer, provide constructive feedback:
-  - Highlight strengths.
-  - Point out missing details or mistakes.
-  - Suggest how to improve the response (e.g., STAR format for behavioral answers).
-- Keep feedback concise, professional, and encouraging.
-- Ask 3–5 questions in total per session.
-- At the end, give a summary report with:
-  - Strengths
-  - Weaknesses
-  - Overall score (out of 10)
-
+        text = f'''
 Candidate Profile:
 Name: {self.name}
 Target Role: {self.role}
