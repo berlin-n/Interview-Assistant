@@ -2,11 +2,11 @@ from AI import AI
 from User import User
 
 class InterviewSession:
-    def __init__(self, ai: AI, user: User):
+    def __init__(self, ai: AI, user:User):
         self.ai = ai
+        self.finished = False
         self.user = user
-        self.history = [
-            {'role': 'system', 'content': '''You are an AI interview coach. Your role is to simulate a realistic interview for the candidate based on their background and target job role.  
+        self.prompt = f'''You are an AI interview coach. Your role is to simulate a realistic interview for the candidate based on their background and target job role.  
 
 Rules:
 - Ask one question at a time (either technical or behavioral).
@@ -20,23 +20,20 @@ Rules:
 - At the end, give a summary report with:
   - Strengths
   - Weaknesses
-  - Overall score (out of 10)'''},
-            {'role': 'user', 'content': self.user.prompt()}
-            ]
-        self.finished = False
+  - Overall score (out of 10). This is the Candidate {user.stuff()}'''
 
     def start(self):
+        ai_response = self.ai.chatSession(self.prompt)
         print("Starting Interview Session...")
 
         while not self.finished:
-            ai_response = self.ai.chat(self.history)
-            print(f"AI:{ai_response}")
-
+            print(f"AI : {ai_response}")
             answer = input("Your Answer:")
-            self.history.append({'role': 'user', 'content': answer})
+            print("AI is thinking...")
+            ai_response = self.ai.chatSession(answer)
+            
     
 if __name__=="__main__":
     u = User('Efe Kwode', 'Junior Machine Learning Engineer', ['SQL', 'Numpy', 'Spark', 'Scikit-Learn', 'NLP with Hugging Face'])
-    prompt = u.prompt()
-    newInterview = InterviewSession(AI("gemini-2.5-flash"), u)
+    newInterview = InterviewSession(AI("gemini-2.5-flash"),u)
     newInterview.start()

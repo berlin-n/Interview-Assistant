@@ -5,19 +5,17 @@ class AI:
     def __init__(self, model):
         self.model = model
         self.client = genai.Client()
+        self.chat = self.client.chats.create(model=model)
 
-    def chat(self, messages: list[dict]):
-        formatted = [f"{m['role'].upper()}:{m['content']}" for m in messages]
-        response = self.client.models.generate_content(
-            model = self.model,
-            contents = formatted
-        )
+    def chatSession(self, message):
+        # formatted = [f"{m['role'].upper()}:{m['content']}" for m in messages]
+        response = self.chat.send_message(message)
         return response.text
     
 if __name__ == "__main__":
     u = User('Efe Kwode', 'Junior Machine Learning Engineer', ['SQL', 'Numpy', 'Spark', 'Scikit-Learn', 'NLP with Hugging Face'])
-    gemini = AI("gemini-2.5-flash")
-    interview = gemini.chat([{'role':'system', 'content': '''You are an AI interview coach. Your role is to simulate a realistic interview for the candidate based on their background and target job role.  
+    gemini = AI("gemini-2.5-pro")
+    interview = gemini.chatSession(f'''You are an AI interview coach. Your role is to simulate a realistic interview for the candidate based on their background and target job role.  
 
 Rules:
 - Ask one question at a time (either technical or behavioral).
@@ -31,5 +29,5 @@ Rules:
 - At the end, give a summary report with:
   - Strengths
   - Weaknesses
-  - Overall score (out of 10)'''},{'role': 'user', 'content': u.prompt()}])
+  - Overall score (out of 10). This is the Candidate {u.stuff()}''')
     print(interview)
